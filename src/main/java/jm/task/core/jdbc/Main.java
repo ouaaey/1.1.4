@@ -18,13 +18,13 @@ public class Main {
         userService.saveUser("Mariya", "Matveeva", (byte) 46);
         userService.saveUser("Vladimir", "Matveev", (byte) 50);
         userService.saveUser("Anna", "Matveeva", (byte) 15);
-        //получение всех пользователей из базы и их вывод в консоль
+        //получение всех пользователей из базы !!
         List<User> users = userService.getAllUsers();
         for (User user : users) {
             System.out.println(user);
-        } //очистить таблицу
+        } //очистить таблицу !!
         userService.cleanUsersTable();
-        //удаление таблицы
+        //удаление таблицы !!
         userService.dropUsersTable();
 
 
