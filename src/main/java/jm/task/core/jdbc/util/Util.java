@@ -9,15 +9,17 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Util {
-    // реализуйте настройку соеденения с БД
-    private static final String URL = "jdbc:mysql://localhost:3306/mydatabase";
-    private static final String USERNAME = "root"; // имя пользователя воркбенча
-    private static final String PASSWORD = "wErFg45!!!"; // пароль, соответственно
 
-    //public static Connection getConnection() throws SQLException {
-    // return DriverManager.getConnection(URL, USERNAME, PASSWORD);
-    //}
+    private static final String URL = "jdbc:mysql://localhost:3306/mydatabase";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "wErFg45!!!";
+
+    private Util() {
+
+    }
+
     private static SessionFactory sessionFactory;
+
     public static Connection getConnection() {
         Connection connection = null;
         try {
@@ -25,8 +27,10 @@ public class Util {
             System.out.println("jdbc connected to database");
         } catch (SQLException e) {
             e.printStackTrace();
-        } return connection;
+        }
+        return connection;
     }
+
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             try {
@@ -45,9 +49,11 @@ public class Util {
                 System.out.println("hibernate session factory failed !");
                 e.printStackTrace();
             }
-        } return sessionFactory;
+        }
+        return sessionFactory;
     }
-    public static void closeSessionFactory(){
+
+    public static void closeSessionFactory() {
         if (sessionFactory != null) {
             sessionFactory.close();
         }

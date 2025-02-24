@@ -15,7 +15,6 @@ public class UserDaoHibernateImpl implements UserDao {
 
     }
 
-
     @Override
     public void createUsersTable() {
         Transaction transaction = null;
@@ -25,12 +24,8 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction.commit();
             System.out.println("table created or exist !");
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -42,12 +37,8 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction.commit();
             System.out.println("table dropped !");
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -69,15 +60,17 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void removeUserById(long id) {
-        // try (Session session = )
+
         Transaction transaction = null;
         try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             User user = session.get(User.class, id);
             if (user != null) {
                 session.delete(user);
+                transaction.commit();
+            } else {
+                transaction.rollback();
             }
-            transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -92,12 +85,12 @@ public class UserDaoHibernateImpl implements UserDao {
         try (Session session = Util.getSessionFactory().openSession()) {
             List<User> resultList = session.createQuery("from User", User.class).list();
             users.addAll(resultList);
-            return List.copyOf(users);
         } catch (Exception e) {
             e.printStackTrace();
-            return Collections.emptyList();
         }
+        return Collections.unmodifiableList(users);
     }
+
 
     @Override
     public void cleanUsersTable() {
@@ -113,6 +106,5 @@ public class UserDaoHibernateImpl implements UserDao {
             }
             e.printStackTrace();
         }
-
     }
 }
